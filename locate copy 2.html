@@ -7,17 +7,12 @@
     <title>Police Report Locate</title>
 
     <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
-     integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
-     crossorigin=""/>
     <script
     src="https://code.jquery.com/jquery-3.1.1.min.js"
     integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
     crossorigin="anonymous"></script>
     <script src="semantic/dist/semantic.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
-     integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
-     crossorigin=""></script>
+    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script> -->
 
     <style>
         #map {
@@ -45,7 +40,7 @@
                     <input type="text" id="pac-input" placeholder="Search...">
                 </div>
             </div>
-            <div class="ui loading segment" style="padding: 0px;">
+            <div class="ui segment" style="padding: 0px;">
                 <div id="map"></div>
             </div>
             <div class="ui container">
@@ -75,6 +70,10 @@
             </div>
         </div>
     </section>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=getLocation&v=weekly"
+      defer
+    ></script>
 </body>
 <script>
     let map, marker;
@@ -94,15 +93,33 @@
             zoom: 12,
             center: { lat: lat, lng: lng },
         };
-        map = L.map('map').setView([lat, lng], 13);
-        marker = L.marker([lat, lng]).addTo(map);
 
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
+        map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        marker = new google.maps.Marker({
+            position: { lat: lat, lng: lng },
+            map: map,
+        });
+
+        // const input = document.getElementById("pac-input");
+        // const center = { lat: lat, lng: lng };
+        // const defaultBounds = {
+        //     north: center.lat + 0.1,
+        //     south: center.lat - 0.1,
+        //     east: center.lng + 0.1,
+        //     west: center.lng - 0.1,
+        // };
+        // const options = {
+        //     bounds: defaultBounds,
+        //     componentRestrictions: { country: "my" },
+        //     fields: ["address_components", "geometry", "icon", "name"],
+        //     strictBounds: false,
+        //     types: ["police"],
+        // };
+        // const autocomplete = new google.maps.places.Autocomplete(input, options);
     }
 
-    getLocation();
+    window.getLocation = getLocation;
+    
 </script>
 </html>
