@@ -71,7 +71,7 @@
         </div>
     </section>
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&libraries=places&callback=getLocation&v=weekly"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=getLocation&v=weekly"
       defer
     ></script>
 </body>
@@ -101,22 +101,22 @@
             map: map,
         });
 
-        const input = document.getElementById("pac-input");
-        const center = { lat: lat, lng: lng };
-        const defaultBounds = {
-            north: center.lat + 0.1,
-            south: center.lat - 0.1,
-            east: center.lng + 0.1,
-            west: center.lng - 0.1,
-        };
-        const options = {
-            bounds: defaultBounds,
-            componentRestrictions: { country: "my" },
-            fields: ["address_components", "geometry", "icon", "name"],
-            strictBounds: false,
-            types: ["police"],
-        };
-        const autocomplete = new google.maps.places.Autocomplete(input, options);
+        // const input = document.getElementById("pac-input");
+        // const center = { lat: lat, lng: lng };
+        // const defaultBounds = {
+        //     north: center.lat + 0.1,
+        //     south: center.lat - 0.1,
+        //     east: center.lng + 0.1,
+        //     west: center.lng - 0.1,
+        // };
+        // const options = {
+        //     bounds: defaultBounds,
+        //     componentRestrictions: { country: "my" },
+        //     fields: ["address_components", "geometry", "icon", "name"],
+        //     strictBounds: false,
+        //     types: ["police"],
+        // };
+        // const autocomplete = new google.maps.places.Autocomplete(input, options);
     }
 
     window.getLocation = getLocation;
