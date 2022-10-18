@@ -12,6 +12,16 @@
     integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
     crossorigin="anonymous"></script>
     <script src="semantic/dist/semantic.min.js"></script>
+    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script> -->
+
+    <style>
+        #map {
+        height: 200px;
+        /* The height is 400 pixels */
+        width: 100%;
+        /* The width is the width of the web page */
+        }
+    </style>
 </head>
 <body>
     <section>
@@ -22,10 +32,94 @@
             <a class="borderless item" href="javascript:void(0);">Police Report App</a>
         </div>
     </section>
-    <section class="ui container" style="margin-top: 52px; padding-top: 10px;">
+    <section class="ui container-fluid" style="margin-top: 52px; padding-top: 10px;">
         <div>
-
+            <div class="ui container">
+                <div class="ui fluid icon input">
+                    <i class="search icon"></i>
+                    <input type="text" id="pac-input" placeholder="Search...">
+                </div>
+            </div>
+            <div class="ui segment" style="padding: 0px;">
+                <div id="map"></div>
+            </div>
+            <div class="ui container">
+                <div class="ui divided bordered list">
+                    <div class="item">
+                      <i class="map marker icon"></i>
+                      <div class="content">
+                        <a class="header">Balai Polis Kinrara</a>
+                        <div class="description">{description}</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <i class="map marker icon"></i>
+                      <div class="content">
+                        <a class="header">Balai Polis Subang</a>
+                        <div class="description">{description}</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <i class="map marker icon"></i>
+                      <div class="content">
+                        <a class="header">Balai Polis SS22</a>
+                        <div class="description">{description}</div>
+                      </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&libraries=places&callback=getLocation&v=weekly"
+      defer
+    ></script>
 </body>
+<script>
+    let map, marker;
+    
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(renderMap);
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+
+    function renderMap(position) {
+        let lat = position.coords.latitude;
+        let lng = position.coords.longitude;
+        const mapOptions = {
+            zoom: 12,
+            center: { lat: lat, lng: lng },
+        };
+
+        map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        marker = new google.maps.Marker({
+            position: { lat: lat, lng: lng },
+            map: map,
+        });
+
+        const input = document.getElementById("pac-input");
+        const center = { lat: lat, lng: lng };
+        const defaultBounds = {
+            north: center.lat + 0.1,
+            south: center.lat - 0.1,
+            east: center.lng + 0.1,
+            west: center.lng - 0.1,
+        };
+        const options = {
+            bounds: defaultBounds,
+            componentRestrictions: { country: "my" },
+            fields: ["address_components", "geometry", "icon", "name"],
+            strictBounds: false,
+            types: ["police"],
+        };
+        const autocomplete = new google.maps.places.Autocomplete(input, options);
+    }
+
+    window.getLocation = getLocation;
+    
+</script>
 </html>

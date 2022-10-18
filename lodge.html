@@ -7,11 +7,15 @@
     <title>Police Report Lodge</title>
 
     <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+
+<link href="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.css" rel="stylesheet" type="text/css" />
     <script
     src="https://code.jquery.com/jquery-3.1.1.min.js"
     integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
     crossorigin="anonymous"></script>
     <script src="semantic/dist/semantic.min.js"></script>
+
+<script src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
 </head>
 <body>
     <section>
@@ -24,8 +28,109 @@
     </section>
     <section class="ui container" style="margin-top: 52px; padding-top: 10px;">
         <div>
-
+            <div class="ui container-fluid">
+                <div class="ui fluid search selection dropdown">
+                    <input type="hidden" name="police_station" value="ps">
+                    <i class="dropdown icon"></i>
+                    <input class="search">
+                    <div class="default text">Search...</div>
+                    <div class="menu">
+                      <div class="item">Balai Polis Wangsa Maju</div>
+                      <div class="item">Balai Polis SS7</div>
+                      <div class="item">Balai Polis Kinrara</div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui segment">
+                <form class="ui form">
+                    <div class="field">
+                      <label>Nama</label>
+                      <input type="text" name="nama" placeholder="">
+                    </div>
+                    <div class="field">
+                      <label>IC No.</label>
+                      <input type="text" name="icno" placeholder="">
+                    </div>
+                    <div class="field">
+                      <label>No Plat Kenderaan</label>
+                      <input type="text" name="carplate" placeholder="">
+                    </div>
+                    <div class="field">
+                      <label>Jenis/Model Kenderaan</label>
+                      <input type="text" name="carmodel" placeholder="">
+                    </div>
+                    <div class="field">
+                      <label>Tarikh & Masa Kemalangan</label>
+                        <div class="ui calendar" id="example1">
+                            <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input type="text" name="datetime" placeholder="Date/Time">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                      <label>Lokasi Kemalangan</label>
+                      <input type="text" name="location" placeholder="">
+                    </div>
+                    <div class="field">
+                      <label>No Telefon</label>
+                      <input type="text" name="mobileno" placeholder="">
+                    </div>
+                    <button class="ui primary button" type="submit">Hantar</button>
+                </form>
+            </div>
         </div>
     </section>
+
+    <div class="ui modal">
+        <div class="header">Berjaya</div>
+        <div class="content">
+          <p>Maklumat telah dihantar ke balai polis wangsa maju.</p>
+          <p>Nama : <span class="m-name"></span></p>
+          <p>IC No : <span class="m-icno"></span></p>
+          <p>No Plat : <span class="m-plate"></span></p>
+          <p>Jenis/Model : <span class="m-model"></span></p>
+          <p>Tarikh & Masa : <span class="m-datetime"></span></p>
+          <p>Lokasi : <span class="m-location"></span></p>
+          <p>No Telefon : <span class="m-mobileno"></span></p>
+          <p>Sila hadir ke balai polis wangsa maju dalam tempoh 24 jam.</p>
+        </div>
+        <div class="actions">
+            <div class="ui approve positive button">Approve</div>
+            <div class="ui cancel button">Cancel</div>
+          </div>
+    </div>
 </body>
+<script>
+    $('.ui.dropdown').dropdown();
+    $('#example1').calendar({
+        monthFirst: false,
+        formatter: {
+            date: function (date, settings) {
+            if (!date) return '';
+            var day = date.getDate();
+            var month = date.getMonth() + 1;
+            var year = date.getFullYear();
+            return day + '/' + month + '/' + year;
+            }
+        }
+    });
+
+    $('.ui.button').on('click', function(e){
+        e.preventDefault();
+
+        $('.m-name').html( $('input[name="nama"]').val() );
+        $('.m-icno').html( $('input[name="icno"]').val() );
+        $('.m-plate').html( $('input[name="carplate"]').val() );
+        $('.m-model').html( $('input[name="carmodel"]').val() );
+        $('.m-datetime').html( $('input[name="datetime"]').val() );
+        $('.m-location').html( $('input[name="location"]').val() );
+        $('.m-mobileno').html( $('input[name="mobileno"]').val() );
+        $('.ui.modal').modal('show');
+    })
+
+    $('.ui.approve.button').on('click', function(){
+        window.location.href = 'index.html';
+    })
+</script>
 </html>
