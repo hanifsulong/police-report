@@ -8,14 +8,14 @@
 
     <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
 
-<link href="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.css" rel="stylesheet" type="text/css" />
     <script
     src="https://code.jquery.com/jquery-3.1.1.min.js"
     integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
     crossorigin="anonymous"></script>
     <script src="semantic/dist/semantic.min.js"></script>
 
-<script src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
+    <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
 </head>
 <body>
     <section>
@@ -30,14 +30,14 @@
         <div>
             <div class="ui container-fluid">
                 <div class="ui fluid search selection dropdown">
-                    <input type="hidden" name="police_station" value="ps">
+                    <input type="hidden" id="ps_dd" name="police_station" value="ps">
                     <i class="dropdown icon"></i>
                     <input class="search">
                     <div class="default text">Search...</div>
                     <div class="menu">
-                      <div class="item">Balai Polis Wangsa Maju</div>
-                      <div class="item">Balai Polis SS7</div>
-                      <div class="item">Balai Polis Kinrara</div>
+                      <div class="item">IPD Subang</div>
+                      <div class="item">Subang Jaya Police Station</div>
+                      <div class="item">Sunway Police Station</div>
                     </div>
                 </div>
             </div>
@@ -76,6 +76,14 @@
                       <label>No Telefon</label>
                       <input type="text" name="mobileno" placeholder="">
                     </div>
+                    <div class="field">
+                      <label>Laporan Kejadian</label>
+                      <textarea name="report" id="" cols="30" rows="10"></textarea>
+                    </div>
+                    <div class="field">
+                      <label>Gambar Kemalangan</label>
+                      <input type="file" name="pic" placeholder="">
+                    </div>
                     <button class="ui primary button" type="submit">Hantar</button>
                 </form>
             </div>
@@ -85,7 +93,7 @@
     <div class="ui modal">
         <div class="header">Berjaya</div>
         <div class="content">
-          <p>Maklumat telah dihantar ke balai polis wangsa maju.</p>
+          <p>Maklumat telah dihantar ke <span class="m-ps"></span>.</p>
           <p>Nama : <span class="m-name"></span></p>
           <p>IC No : <span class="m-icno"></span></p>
           <p>No Plat : <span class="m-plate"></span></p>
@@ -93,44 +101,52 @@
           <p>Tarikh & Masa : <span class="m-datetime"></span></p>
           <p>Lokasi : <span class="m-location"></span></p>
           <p>No Telefon : <span class="m-mobileno"></span></p>
-          <p>Sila hadir ke balai polis wangsa maju dalam tempoh 24 jam.</p>
+          <p>Sila hadir ke <span class="m-ps"></span> dalam tempoh 24 jam.</p>
         </div>
         <div class="actions">
-            <div class="ui approve positive button">Approve</div>
-            <div class="ui cancel button">Cancel</div>
+            <div class="ui cancel button">Tutup</div>
           </div>
     </div>
 </body>
 <script>
-    $('.ui.dropdown').dropdown();
-    $('#example1').calendar({
-        monthFirst: false,
-        formatter: {
-            date: function (date, settings) {
-            if (!date) return '';
-            var day = date.getDate();
-            var month = date.getMonth() + 1;
-            var year = date.getFullYear();
-            return day + '/' + month + '/' + year;
-            }
+    $(document).ready(function(){
+        $('.ui.dropdown').dropdown();
+        const urlParams = new URLSearchParams(location.search);
+
+        if(urlParams.getAll('ipd').length){
+            $('.ui.dropdown').dropdown('set selected', urlParams.get('ipd'));
         }
+
+        $('#example1').calendar({
+            monthFirst: false,
+            formatter: {
+                date: function (date, settings) {
+                if (!date) return '';
+                var day = date.getDate();
+                var month = date.getMonth() + 1;
+                var year = date.getFullYear();
+                return day + '/' + month + '/' + year;
+                }
+            }
+        });
+
+        $('.ui.button').on('click', function(e){
+            e.preventDefault();
+
+            $('.m-ps').html( $('.ui.dropdown').dropdown('get text') );
+            $('.m-name').html( $('input[name="nama"]').val() );
+            $('.m-icno').html( $('input[name="icno"]').val() );
+            $('.m-plate').html( $('input[name="carplate"]').val() );
+            $('.m-model').html( $('input[name="carmodel"]').val() );
+            $('.m-datetime').html( $('input[name="datetime"]').val() );
+            $('.m-location').html( $('input[name="location"]').val() );
+            $('.m-mobileno').html( $('input[name="mobileno"]').val() );
+            $('.ui.modal').modal('show');
+        })
+
+        $('.ui.approve.button').on('click', function(){
+            window.location.href = 'index.html';
+        })
     });
-
-    $('.ui.button').on('click', function(e){
-        e.preventDefault();
-
-        $('.m-name').html( $('input[name="nama"]').val() );
-        $('.m-icno').html( $('input[name="icno"]').val() );
-        $('.m-plate').html( $('input[name="carplate"]').val() );
-        $('.m-model').html( $('input[name="carmodel"]').val() );
-        $('.m-datetime').html( $('input[name="datetime"]').val() );
-        $('.m-location').html( $('input[name="location"]').val() );
-        $('.m-mobileno').html( $('input[name="mobileno"]').val() );
-        $('.ui.modal').modal('show');
-    })
-
-    $('.ui.approve.button').on('click', function(){
-        window.location.href = 'index.html';
-    })
 </script>
 </html>

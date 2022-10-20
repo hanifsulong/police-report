@@ -53,22 +53,22 @@
                     <div class="item">
                       <i class="map marker icon"></i>
                       <div class="content">
-                        <a class="header">Balai Polis Kinrara</a>
-                        <div class="description">{description}</div>
+                        <a class="header" href="lodge.html?ipd=IPD Subang">IPD Subang</a>
+                        <!-- <div class="description">{description}</div> -->
                       </div>
                     </div>
                     <div class="item">
                       <i class="map marker icon"></i>
                       <div class="content">
-                        <a class="header">Balai Polis Subang</a>
-                        <div class="description">{description}</div>
+                        <a class="header" href="lodge.html?ipd=Subang Jaya Police Station">Subang Jaya Police Station</a>
+                        <!-- <div class="description">{description}</div> -->
                       </div>
                     </div>
                     <div class="item">
                       <i class="map marker icon"></i>
                       <div class="content">
-                        <a class="header">Balai Polis SS22</a>
-                        <div class="description">{description}</div>
+                        <a class="header" href="lodge.html?ipd=Sunway Police Station">Sunway Police Station</a>
+                        <!-- <div class="description">{description}</div> -->
                       </div>
                     </div>
                 </div>
@@ -96,6 +96,19 @@
         };
         map = L.map('map').setView([lat, lng], 13);
         marker = L.marker([lat, lng]).addTo(map);
+
+        // 1. IPD Subang: 3.045468401956714, 101.58906783206355
+        // 2. Subang Jaya Police Station: 3.0741105177995993, 101.58537380556666
+        // 3. Sunway Police Station: 3.0735749159236154, 101.60925117994046
+        const policeStationMarkers = [
+            { lat: 3.045468401956714, lng: 101.58906783206355, name: 'IPD Subang' },
+            { lat: 3.0741105177995993, lng: 101.58537380556666, name: 'Subang Jaya Police Station' },
+            { lat: 3.0735749159236154, lng: 101.60925117994046, name: 'Sunway Police Station' }
+        ];
+
+        policeStationMarkers.forEach(function(psMarker){
+            L.marker([psMarker.lat, psMarker.lng]).bindPopup(psMarker.name).addTo(map);
+        });
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
